@@ -1,0 +1,14 @@
+backend/db.sqlite3
+
+backend/backend/__pycache__/*
+backend/backend/asgi.py
+backend/backend/wsgi.py
+
+backend/blog/__pycache__/*
+backend/blog/apps.py
+backend/blog/tests.py
+
+backend/users/*
+
+.idea/*
+
