@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}
+    Create post
+{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    <h1>Create new post</h1>
+    <div class="form-group">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-success">Post</button>
+        </form>
+     </div>
+    <br/>
+    <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
+{% else %}
+    <h1>Log in to create posts!</h1>
+{% endif %}
+{% endblock %}

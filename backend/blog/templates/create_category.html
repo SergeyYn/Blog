@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}
+    Create category
+{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    <h1>Create category</h1>
+    <div class="form-group">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-success">Create category</button>
+        </form>
+     </div>
+    <br/>
+    <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
+{% else %}
+    <h1>Log in to create categories!</h1>
+{% endif %}
+{% endblock %}

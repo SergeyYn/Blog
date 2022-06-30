@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Posts</h1>
+    <ul>
+        {% for post in posts %}
+            <li style="margin-bottom: 0.5em;">
+                <strong><a href="{% url 'post-details' post.id %}">{{ post.title }}</a></strong> |
+                <a href="{% url 'category' post.category.id %}">{{ post.category.name }}</a> |
+                {{ post.author.first_name }} {{ post.author.last_name }} |
+                {{ post.post_date }}
+                <br/>
+
+                <p style="
+                    display: -webkit-box;
+                    -webkit-mask-image: -webkit-gradient(linear, left 70%,
+                    left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
+                    -webkit-line-clamp: 4;
+                     line-clamp: 4;
+                     -webkit-box-orient: vertical;">
+                {{post.body}}</p>
+            </li>
+        {% endfor %}
+    </ul>
+
+
+{% endblock %}
+

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Blog categories</h1>
+    <ul>
+        {% for c in category_menu_list %}
+            <li>
+                <h4><a href="{% url 'category' c.id %}">{{c.name}}</a></h4>
+            </li>
+        {% endfor %}
+    </ul>
+
+
+{% endblock %}
+
