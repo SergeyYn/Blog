@@ -13,7 +13,7 @@ export default {
   components: {
     NavBar
   },
-  beforeCreate(){
+  created(){
     this.$store.commit('initializeStore');
 
     const token = this.$store.state.token;
