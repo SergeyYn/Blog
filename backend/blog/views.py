@@ -1,8 +1,14 @@
+from django.shortcuts import render
+
 from .models import Post, Category
 
 from .serializers import PostSerializer, CategorySerializer
 
 from rest_framework.viewsets import ModelViewSet
+
+
+def channels_admin(request):
+    return render(request, 'channels/users.html')
 
 
 class PostViewSet(ModelViewSet):
@@ -16,20 +22,25 @@ class PostViewSet(ModelViewSet):
             queryset = Post.objects.all().order_by('-post_date')
         return queryset
 
-    def patch(self, request, *args, **kwargs):
-        post = self.get_object()
+
+
+class PostDetailViewSet(ModelViewSet):
+    serializer_class = PostSerializer
+    def put(self, request, id):
+        print('AAAAAAA')
+        post = self.get_object(pk=id)
+        prev_cat = post.category.id
+
         data = request.data
 
         post_category = Category.object.get(id=data['category_id'])
-        post.category = post_category
 
         post.title = data['title']
         post.body = data['body']
 
-        post.save()
+        post.save(previous_cat=prev_cat)
         serializer = PostSerializer(post)
         return (serializer.data)
-
 
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all().order_by('name')

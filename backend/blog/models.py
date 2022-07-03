@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
-from datetime import date, datetime
-
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 class Category(models.Model):
     class Meta:
@@ -29,3 +29,24 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('post-details', args=(str(self.id)))
+
+
+
+    def save(self, previous_cat=None, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if previous_cat:
+            print('sending to post_list_%s' % previous_cat)
+            async_to_sync(get_channel_layer().group_send)(
+                'post_list_%s' % previous_cat, {"type": "update.list"}
+            )
+            print('sent! to post_list_%s' % self.category.id)
+        print('sending to post_list_%s' % self.category.id)
+        async_to_sync(get_channel_layer().group_send)(
+            'post_list_%s' % self.category.id, {"type": "update.list"}
+        )
+        print('sent! to post_list_%s' % self.category.id)
+        print('sending to post_list_0')
+        async_to_sync(get_channel_layer().group_send)(
+            'post_list_0', {"type": "update.list"}
+        )
+        print('sent! to post_list_0')

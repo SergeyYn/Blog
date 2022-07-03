@@ -25,6 +25,8 @@ class PostSerializer(ModelSerializer):
         model = Post
         fields = ['id', 'title', 'author', 'category', 'body', 'post_date', 'author_id', 'category_id']
 
+
+
     #def create(self, validated_data):
     #    author_id = validated_data.pop('author_id')
     #    category_id = validated_data.pop('category_id')
