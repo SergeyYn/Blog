@@ -17,25 +17,35 @@ export default {
   data(){
     return{
         posts: [],
+        postsSocket: ''
     }
   },
   created(){
-    this.getPostList();
+    this.connect();
   },
   methods:{
-    getPostList(){
-      axios
-        .get('/api/blog/posts/')
-        .then(response => {
-            this.posts = response.data;
-        })
-        .catch(err=> {
-            alert(err)
-            console.log(err)
-        })
+    connect(){
+      let url = `ws://localhost:8000/ws/socket-server/posts/0`;
+      this.postsSocket = new WebSocket(url);
+      this.postsSocket.onopen = () => {
+        
       }
+      this.postsSocket.onmessage = ({data}) => {
+        console.log('SOCKET DATA: ', JSON.parse(data));
+        this.posts = JSON.parse(data)
+      }
+    },
+    disconnect(){
+      this.postsSocket.close()
+    }
+  },
+  beforeUnmount() {
+    this.disconnect()
   }
 }
+
+
+
 </script>
 
 <style scoped>

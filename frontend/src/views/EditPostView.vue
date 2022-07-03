@@ -1,7 +1,7 @@
 <template>
   <div v-if="this.$store.state.isAuthenticated">
     <h1>Edit post</h1>
-    <PostForm :formData="formData" :requestType="'PATCH'"></PostForm>
+    <PostForm :formData="formData" :requestType="'put'"></PostForm>
   </div>
 </template>
 

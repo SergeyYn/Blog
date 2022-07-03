@@ -18,22 +18,23 @@ export default {
         category: ''
     }
   },
-  created(){
-    this.getCategoryPostList();
+  mounted(){
+    this.connect();
     this.getCategory();
   },
   methods:{
-    getCategoryPostList(){
-      axios
-        .get('api/blog/posts/?cat=' + this.$route.params.id)
-        .then(response => {
-          this.posts = response.data;
-          console.log(this.posts)
-        })
-        .catch(err=> {
-            alert(err)
-            console.log(err)
-        })
+    connect(){
+      let url = `ws://localhost:8000/ws/socket-server/posts/` + this.$route.params.id;
+      this.postsSocket = new WebSocket(url);
+      this.postsSocket.onopen = () => {
+      }
+      this.postsSocket.onmessage = ({data}) => {
+        console.log('SOCKET DATA: ', JSON.parse(data));
+        this.posts = JSON.parse(data)
+      }
+    },
+    disconnect(){
+      this.postsSocket.close()
     },
     getCategory(){
       axios
@@ -46,6 +47,9 @@ export default {
           console.log(err)
         })
     }
+  },
+  beforeUnmount() {
+    this.disconnect()
   }
 }
 

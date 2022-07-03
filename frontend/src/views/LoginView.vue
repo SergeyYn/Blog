@@ -50,8 +50,9 @@ import axios from 'axios'
               axios
                   .get('/api/auth/users/me')
                   .then(response => {
-                    localStorage.setItem('user_id', response.data.id)
-                    this.$store.state.user_id = response.data.id
+                    localStorage.setItem('user_id', response.data.id);
+                    this.$store.state.user_id = response.data.id;
+                    this.notifyAdmin();
                     this.$router.push({ name: 'home' });
                   })
                   .catch(err=> {
@@ -73,7 +74,16 @@ import axios from 'axios'
                 this.cred_error = '';
               console.log(err)
             })
-        
+      },
+      notifyAdmin(){
+        let url = `ws://localhost:8000/ws/socket-server/admin/users`;
+        let userSocket = new WebSocket(url);
+        userSocket.onopen = () => {
+          userSocket.send(JSON.stringify({
+            'action' : 'login',
+            'id': this.$store.state.user_id}))
+          userSocket.close()
+        }
       }
     }
   }
