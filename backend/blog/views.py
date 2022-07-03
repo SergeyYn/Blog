@@ -27,20 +27,19 @@ class PostViewSet(ModelViewSet):
 class PostDetailViewSet(ModelViewSet):
     serializer_class = PostSerializer
     def put(self, request, id):
-        print('AAAAAAA')
         post = self.get_object(pk=id)
         prev_cat = post.category.id
 
         data = request.data
 
         post_category = Category.object.get(id=data['category_id'])
-
+        post.category = post_category
         post.title = data['title']
         post.body = data['body']
 
         post.save(previous_cat=prev_cat)
         serializer = PostSerializer(post)
-        return (serializer.data)
+        return serializer.data
 
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all().order_by('name')
