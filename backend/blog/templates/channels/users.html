@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Authenticated users</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+
+</head>
+<body>
+    <div class="container text-center mt-5">
+        <h1>Authenticated users</h1>
+        <table class="table" id="users">
+            <thead>
+            <th>Username</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <script type="text/javascript">
+
+        let url = `ws://${window.location.host}/ws/socket-server/admin/users`;
+        const userSocket = new WebSocket(url);
+        userSocket.onmessage = function(e) {
+            let data = JSON.parse(e.data);
+            if(data['msg_type'] == 'user_change'){
+                if(data['text']['username']){
+                    document.getElementById('users').insertAdjacentHTML('beforeend',
+                    `<tr id='${data.text.id}'>
+                        <td>${data.text.username}</td>
+                        <td>${data.text.first_name}</td>
+                        <td>${data.text.last_name}</td>
+                    </tr>`
+                    )
+                }
+                else{
+                    let row = document.getElementById(data['text'])
+                    if(row)
+                        row.parentNode.removeChild(row);
+                }
+            }
+            console.log('DATA: ', data['text']);
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+
+</body>
+</html>
