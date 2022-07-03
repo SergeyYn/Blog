@@ -4,7 +4,7 @@ export default createStore({
     state:{
         token: '',
         user_id: -1,
-        isAuthenticated: false
+        isAuthenticated: false,
     },
     mutations:{
         initializeStore(state){
@@ -27,7 +27,9 @@ export default createStore({
             state.token = '';
             state.isAuthenticated = false;
             state.user_id = -1;
-        }
+            localStorage.clear();
+        },
+        
     },
     actions:{
 
