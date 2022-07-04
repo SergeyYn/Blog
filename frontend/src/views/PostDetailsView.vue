@@ -1,5 +1,5 @@
 <template>
-    <PostDetails :post="post" v-if="post"></PostDetails>
+    <PostDetails v-if="loaded" :post="post" :loaded="loaded"></PostDetails>
 </template>
 
 <script>
@@ -11,23 +11,35 @@ export default {
     },
     data(){
         return{
-            post: {},
+            post:{},
+            loaded: false
         }
     },
-    created(){
-        this.get_post_details();
+    async mounted(){
+        await this.get_post_details()
     },
     methods:{
-        get_post_details(){
-            axios
-                .get('/api/blog/posts/'+ this.$route.params.id)
-                .then(response => {
-                    this.post = response.data;
-                })
-                .catch(err=> {
-                    alert(err)
-                    console.log(err)
-                })
+        async get_post_details(){
+            try{
+                let response = await axios.get('/api/blog/posts/'+ this.$route.params.id)
+                this.post = response.data;
+                this.loaded = true;
+            }
+            catch(error){
+                alert(err)
+                   console.log(err)
+            }
+             //await axios.get('/api/blog/posts/'+ this.$route.params.id)
+             //  .then((response) => {
+             //      console.log(response)
+             //      if(response.data.id)
+             //          this.post = response.data;
+             //          this.loaded = true;
+             //  })
+             //  .catch((err)=> {
+             //      alert(err)
+             //      console.log(err)
+             //  })
         }
     }
 }

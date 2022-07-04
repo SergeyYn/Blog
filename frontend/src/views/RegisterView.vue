@@ -3,7 +3,7 @@
     <form @submit.prevent="registerUser" class="register-form">
       <div class="form-group">
         <label for="firstname">First name</label>
-        <input type="text" name="firstname" class="form-control" id="firtstname" v-model="first_name">
+        <input type="text" name="firstname" class="form-control" id="firstname" v-model="first_name">
       </div>
       <p class="error">{{errors.first_name_error}}</p>
       <div class="form-group">
