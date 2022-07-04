@@ -1,5 +1,5 @@
 <template>
-  <div v-if="post">
+  <div v-if="loaded">
         <h1>{{post.title}}</h1>
         <strong>Posted by:</strong> {{ post.author.first_name }} {{ post.author.last_name }}
         <strong>At:</strong> {{ new Date(post.post_date).toLocaleString() }}
@@ -23,7 +23,8 @@ export default {
     props:{
         post:{
             type: Object
-        }
+        },
+        loaded: false
     },
     computed:{
         checkAuthor(){
